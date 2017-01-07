@@ -7,7 +7,7 @@
 - name: Create Caddy user
   user: name={{ caddy_user }} system=yes createhome=yes home={{ caddy_home }} group={{ caddy_user }}
   become: true
-
+ 
 - name: Get all Caddy releases
   get_url: url=https://api.github.com/repos/mholt/caddy/git/refs/tags dest={{ caddy_home }}/releases.txt force=yes
   when: caddy_update
@@ -56,6 +56,10 @@
   copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile owner={{ caddy_user }}
   become: true
   notify: Restart Caddy
+
+- name: Set default site on port 80
+  template: src=403.html dest=/var/www/html/403.html mode=0644
+  become: true
 
 - name: Systemd service
   template: src=caddy.service dest=/etc/systemd/system/caddy.service mode=0755
