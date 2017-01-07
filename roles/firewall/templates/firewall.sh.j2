@@ -31,6 +31,8 @@ iptables -A INPUT -p udp -m udp --dport 56881:56889 -j ACCEPT
 
 #MADSONIC
 iptables -A INPUT -p tcp --dport 4444 -j ACCEPT
+#DELUGE
+iptables -A INPUT -p tcp --dport 8888 -j ACCEPT
 
 #PLEX
 iptables -A INPUT -p tcp -m tcp --dport 32400 -j ACCEPT
