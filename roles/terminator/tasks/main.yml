@@ -1,0 +1,12 @@
+ - name: Install Terminator
+   apt: pkg=terminator state=present
+   become: true
+ 
+ - name: Ensure folder exisits
+   file: path={{local_home|default('~')}}/.config/terminator state=directory   
+
+ - name: Remove default config
+   file: path={{local_home|default('~')}}/.config/terminator/config state=absent
+
+ - name: Install custom config
+   copy: src=config dest={{local_home|default('~')}}/.config/terminator/config owner={{user}}

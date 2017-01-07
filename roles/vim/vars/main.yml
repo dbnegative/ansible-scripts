@@ -1,0 +1,7 @@
+vim_plugins:
+ - 'fatih/vim-go'
+ - 'Valloric/YouCompleteMe'
+ - 'SirVer/ultisnips'
+ - 'honza/vim-snippets'
+ - 'pearofducks/ansible-vim'
+ - 'autoclose'

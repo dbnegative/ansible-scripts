@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+
+  vars:
+    user: jasonw
+    group: jasonw
+    zsh_export_paths:
+            GOPATH: ~/workspace/go
+            GOROOT: /usr/lib/go
+
+
+  roles:
+   - { role: ohmyzsh, tags: ohmyzsh, vars: {zsh_export_paths: { GOPATH: ~/workspace/go, GOROOT: /usr/lib/go
+} } }
+   - { role: powerline_fonts, tags: powerline }            
+   - { role: vim, tags: vim }
+   - { role: golang, tags: [golang, go] }
+   - { role: terminator, tags: terminator }
+   - { role: gcloud, tags: ['download'], gcloud_tmp_path: /tmp, gcloud_archive_name: google-cloud-sdk-119.0.0-linux-x86_64.tar.gz}

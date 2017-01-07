@@ -1,0 +1,23 @@
+---
+- hosts: server
+  vars:
+    user: dbnegative
+    group: dbnegative
+    zsh_export_paths:
+            GOPATH: ~/workspace/go
+            GOROOT: /usr/lib/go
+
+  roles:
+   - { role: sshd, tags: sshd }
+   - { role: firewall, tags: firewall }
+   - { role: fail2ban, tags: fail2ban }
+   - { role: ohmyzsh, tags: ohmyzsh, vars: {zsh_export_paths: { GOPATH: ~/workspace/go, GOROOT: /usr/lib/go
+} } }
+   - { role: powerline_fonts, tags: powerline }            
+   - { role: golang, tags: ['golang', 'go'] }
+   - { role: nethogs, tags: nethogs }
+   - { role: docker, tags: docker }
+   - { role: madsonic-docker, tags: ['madsonic-docker', 'madsonic'] }
+   - { role: plex-docker, tags: ['plex-docker','plex'] }
+   - { role: deluge-docker, tags: ['deluge-docker','deluge'] }
+   - { role: caddy-ssl-proxy, tags: caddy}

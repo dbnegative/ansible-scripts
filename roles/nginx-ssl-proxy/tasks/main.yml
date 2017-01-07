@@ -1,0 +1,21 @@
+- name: Install nginx
+  apt: pkg={{item}} state=present
+  with_items:
+      - nginx
+      - openssl
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+#- name: Generate SSL Certs
+#  shell: "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/cert.key -out /etc/nginx/cert.crt"
+#  become: true
+
+- name: Copy over custom config
+  template: src=ssl-proxy.conf.j2 dest=/etc/nginx/conf.d/ssl-proxy.conf
+  become: true
+  when: ansible_distribution == "Ubuntu"
+
+- name: Restart nginx server
+  service: name=nginx state=restarted enabled=true
+  become: true
+  when: ansible_distribution == "Ubuntu"    

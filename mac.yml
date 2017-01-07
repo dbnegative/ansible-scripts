@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  remote_user: jason.witting        
+
+  vars:
+    user: jason.witting
+    group: jason.witting
+    zsh_export_paths: 
+      GOPATH: ~/workspace/go
+      GOROOT: /usr/local/opt/go/libexec
+
+  roles:
+   - { role: ohmyzsh, tags: ohmyzsh }
+   - { role: powerline_fonts, tags: powerline } 
+   - { role: vim, tags: vim } 
+   - { role: docker-openvpn, tags: openvpn}     

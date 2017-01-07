@@ -1,0 +1,9 @@
+ - name: Install Plex Docker Container Svc
+   template: src=plex.service.j2 dest=/etc/systemd/system/plex.service
+   become: true
+   notify: Plex systemd daemon_reload
+
+ - name: Start Plex
+   become: true
+   service: name=plex state=running enabled=true
+           

@@ -1,0 +1,10 @@
+ - name: Install Go Langauge
+   apt: pkg=golang state=present
+   become: true    
+   when: ansible_distribution == "Ubuntu"
+
+ - name: Install Go OSX
+   homebrew: pkg=go state=present
+   when: ansible_distribution == "MacOSX"
+   become: false 
+

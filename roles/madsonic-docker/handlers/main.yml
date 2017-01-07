@@ -1,0 +1,8 @@
+ - name: Madsonic systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart Madsonic
+
+ - name: Restart Madsonic
+   service: name=madsonic state=restarted
+   become: true

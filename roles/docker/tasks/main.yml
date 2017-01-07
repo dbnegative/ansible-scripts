@@ -1,0 +1,42 @@
+
+ - name: Install Docker Repo Key
+   become: true
+   apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id={{docker_repo_key_id}}
+ 
+ - name: Install Docker source list
+   become: true
+   template: src=docker.list dest=/etc/apt/sources.list.d/docker.list
+
+ - name: Update Apt
+   become: true
+   apt: update_cache=yes 
+
+ - name: Install Docker dependancies
+   apt: pkg={{item}} state=present
+   when: ansible_distribution == "Ubuntu"
+   become: true
+   with_items:
+        - apt-transport-https
+        - ca-certificates
+        - docker-engine    
+
+ - name: Create systemd docker drop in folder 
+   file: path=/etc/systemd/system/docker.service.d state=directory owner=root mode=0755
+   become: true 
+
+ - name: Change Docker daemon not to change iptables
+   template: src=disableiptables.conf dest=/etc/systemd/system/docker.service.d/disableiptables.conf
+   become: true
+   notify: Docker systemd daemon_reload  
+
+ - name: Start Docker
+   become: true
+   service: name=docker state=started enabled=yes
+ 
+ - name: Create Docker user group
+   become: true
+   group: name=docker state=present
+ 
+ - name: Add localuser to group
+   become: true
+   user: name={{user}} groups=docker append=yes

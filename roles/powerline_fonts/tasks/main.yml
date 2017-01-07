@@ -1,0 +1,5 @@
+ - name: Clone Powerline fonts repo
+   git: clone=true repo=https://github.com/powerline/fonts.git dest="{{ fonts_path|default('~/fonts') }}" update=no accept_hostkey=true
+ 
+ - name: Install Powerline fonts
+   shell: "{{ fonts_path|default('~/fonts') }}/install.sh"

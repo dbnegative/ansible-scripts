@@ -1,0 +1,62 @@
+ - name: "Install VIM" 
+   apt: pkg=vim state=present
+   become: true
+   when: ansible_distribution == "Ubuntu" 
+   
+ - name: "Install Vim OSX"
+   homebrew: pkg=vim state=present
+   when: ansible_distribution == "MacOSX"
+ 
+ - name: Install Vundle plugin manager
+   git: clone=yes repo=https://github.com/VundleVim/Vundle.vim.git dest="{{local_home|default('~/')}}/.vim/bundle/Vundle.vim" accept_hostkey=yes update=no
+ 
+ - name: Install YouCompleteMe plugin
+   git: clone=yes repo=https://github.com/Valloric/YouCompleteMe.git dest="{{local_home|default('~/')}}/.vim/bundle/YouCompleteMe" accept_hostkey=yes update=no
+
+ - name: Install required library's for building YCM's autocomplete
+   apt: pkg="{{item}}" state=present
+   with_items:
+        - build-essential
+        - python-dev
+        - cmake
+   when: ansible_distribution == "Ubuntu"
+   become: true
+
+ - name: Install required library's for building YCM's autocomplete OSX - XCODE REQUIRED
+   homebrew: pkg="{{item}}" state=present
+   become: false
+   with_items:
+       - cmake
+   when: ansible_distribution == "MacOSX"
+
+ - name: Check if YCM has already been built
+   stat: path="{{local_home|default('~/')}}/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so"
+   register: ycm_compiled
+
+ - name: Compile and Install YCM autocomplete with Go support
+   shell: "{{local_home|default('~/')}}/.vim/bundle/YouCompleteMe/install.py --gocode-completer"
+   when: ycm_compiled.stat.exists != true 
+
+ - name: "Remove any old .vimrc"
+   file: path={{local_home|default('~/')}}/.vimrc state=absent 
+
+ - name: Install custom .vimrc
+   template: src=vimrc.j2 dest="{{local_home|default('~/')}}/.vimrc" owner={{user}}
+
+ - name: Install all plugin's with Vundle
+   shell: "vim +PluginInstall +qall"
+
+ - name: Check if Vim-Go Is Installed
+   stat: path="{{local_home|default('~/')}}/.vim/bundle/vim-go/plugin/go.vim"
+   register: govim_installed   
+
+# - debug: var="{{govim_installed}}"
+
+ - name: Install Go Lang if Vim-Go plugin is installed
+   include: "{{ playbook_dir }}/roles/golang/tasks/main.yml"
+   when: govim_installed.stat.exists 
+
+ - name: Install Go tools for vim-go
+   shell: vim +GoBinariesInstall +qall
+   when: govim_installed.stat.exists
+

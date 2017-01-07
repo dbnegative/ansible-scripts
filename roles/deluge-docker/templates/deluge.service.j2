@@ -1,0 +1,15 @@
+[Unit]
+Description=Deluge Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=5min
+ExecStart=/usr/bin/docker run --memory=2g --log-driver=none --net=host --name=deluge -e TZ=Europe/London -e PUID=1000 -e PGID=1000 -v /data/downloads:/downloads -v /data/configs/deluge:/config  -v /data/music:/music -v /data/tvshows:/tvshows linuxserver/deluge
+ExecStop=/usr/bin/docker stop -t 2 deluge
+ExecStopPost=/usr/bin/docker rm -f deluge
+
+[Install]
+WantedBy=default.target

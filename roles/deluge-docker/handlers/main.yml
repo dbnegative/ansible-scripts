@@ -1,0 +1,8 @@
+ - name: Deluge systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart Deluge
+
+ - name: Restart Deluge
+   service: name=deluge state=restarted
+   become: true

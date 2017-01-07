@@ -1,0 +1,16 @@
+- name: Install fail2ban package
+  apt: pkg=fail2ban state=present
+  become: true    
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install custom jail SSH conf
+  template: src=sshd.conf dest=/etc/fail2ban/jail.d/sshd.conf 
+  become: true
+  when: ansible_distribution == "Ubuntu"  
+  notify: Reload systemd
+
+- name: Start fail2ban  
+  service: name=fail2ban state=started
+  become: true    
+  when: ansible_distribution == "Ubuntu"
+  

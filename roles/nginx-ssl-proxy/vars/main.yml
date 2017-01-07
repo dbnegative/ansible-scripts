@@ -1,0 +1,9 @@
+redirect_hosts: {
+    madsonic: {
+        ip: "172.17.0.1",
+        local_port: "4040",
+        remote_port: "4444"    
+    }
+}
+
+nginx_remotehost: "somehost.com"

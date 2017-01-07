@@ -1,0 +1,8 @@
+ - name: Plex systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart Plex
+
+ - name: Restart Plex
+   service: name=plex state=restarted
+   become: true

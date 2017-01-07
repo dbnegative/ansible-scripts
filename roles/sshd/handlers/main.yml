@@ -1,0 +1,10 @@
+- name: Reload systemd service file
+  command: systemctl daemon-reload
+  notify: Restart SSH
+  become: true
+  ignore_errors: yes
+
+- name: Restart SSH
+  service: name=ssh state=restarted
+  become: true
+ 

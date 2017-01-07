@@ -1,0 +1,15 @@
+[Unit]
+Description=Madsonic container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=5min
+ExecStart=/usr/bin/docker run --log-driver=none -p 4040:4040 -p 4050:4050 --name=madsonic -e CONTEXT_PATH= -e SSL=yes -v /data/music/:/media -v /data/configs/madsonic/:/config -v /etc/localtime:/etc/localtime:ro madsonic/alpine-madsonic
+ExecStop=/usr/bin/docker stop -t 2 madsonic
+ExecStopPost=/usr/bin/docker rm -f madsonic
+
+[Install]
+WantedBy=default.target

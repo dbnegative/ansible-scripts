@@ -1,0 +1,9 @@
+ - name: Install Madsonic Docker Container Svc
+   template: src=madsonic.service.j2 dest=/etc/systemd/system/madsonic.service
+   become: true
+   notify: Madsonic systemd daemon_reload
+
+ - name: Start Madsonic
+   become: true
+   service: name=madsonic state=running enabled=true
+           

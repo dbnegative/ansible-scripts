@@ -1,0 +1,9 @@
+ - name: Docker systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart Docker
+
+ - name: Restart Docker
+   service: name=docker state=restarted
+   become: true
+   

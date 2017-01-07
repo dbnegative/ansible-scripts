@@ -1,0 +1,15 @@
+[Unit]
+Description=Plex Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=5min
+ExecStart=/usr/bin/docker run --log-driver=none --net=host --name=plex -e VERSION=latest -e PUID=1000 -e GUID=1000 -v /data/tvshows/:/data/tvshows -v /data/movies/:/data/movies -v /data/music/:/data/music -v /data/configs/plex/:/config linuxserver/plex
+ExecStop=/usr/bin/docker stop -t 2 plex
+ExecStopPost=/usr/bin/docker rm -f plex
+
+[Install]
+WantedBy=default.target

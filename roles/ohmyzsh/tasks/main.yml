@@ -1,0 +1,47 @@
+# Install Oh-My-Zsh 
+
+ - name: Install Base Packages Ubuntu
+   apt: pkg={{item}} state=present
+   when: ansible_distribution == "Ubuntu"
+   become: true
+   with_items: 
+        - git
+        - git-core
+        - zsh
+        - curl
+        - tmux
+        - jq
+
+ - name: Install Base Packages OSX
+   homebrew: pkg={{item}} state=present
+   become: false
+   when: ansible_distribution == "MacOSX"
+   with_items:
+        - zsh
+        - zsh-completions
+        - tmux
+        - tmux-cssh
+        - peco
+        - jq
+
+ - name: Clone Oh-My-Zsh Repo
+   git: clone=true repo=git://github.com/robbyrussell/oh-my-zsh.git dest=~/.oh-my-zsh update=no accept_hostkey=true
+
+ - name: Remove any older version of .zshrc
+   file: path=~/.zshrc state=absent
+
+ - name: Install new .zshrc
+   template: src=.zshrc.j2 dest=~/.zshrc
+
+ - name: Install new .zshrc
+   template: src=.zprofile.j2 dest=~/.zprofile
+
+ - name: Install tmux config
+   template: src=.tmux.conf dest=~/.tmux.conf  
+
+ - name: Create empty awscreds file
+   file: path=~/.awscreds state=touch
+
+ - name: Switch shell to ZSH
+   shell: chsh -s /bin/zsh {{user}}
+   become: true

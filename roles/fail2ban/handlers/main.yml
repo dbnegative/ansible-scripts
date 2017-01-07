@@ -1,0 +1,9 @@
+- name: Reload systemd
+  command: /bin/systemctl daemon-reload
+  become: true
+  notify: restart fail2ban
+
+- name: restart fail2ban  
+  service: name=fail2ban state=restarted
+  become: true    
+  when: ansible_distribution == "Ubuntu"

@@ -1,0 +1,12 @@
+- name: Install sshd server
+  apt: pkg=openssh-server state=present
+  become: true
+
+- name: Install custom sshd_config
+  template: src=sshd_config dest=/etc/ssh/sshd_config
+  become: true
+  notify: Reload systemd service file
+  
+
+
+

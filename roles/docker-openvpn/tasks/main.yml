@@ -1,0 +1,17 @@
+- name: Check if config has already been generated
+  stat: path=~/workspace/docker-openvpn/config/openvpn.conf
+  register: configExists
+
+- name: Generate OpenVPN Config
+  shell: docker run -v {{vpnconfigdir}}:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://{{vpnfqdn}}
+  when: configExists.stat.exists != true
+
+- name: Check if config has already been generated                                       
+  stat: path=~/workspace/docker-openvpn/config/openvpn.conf
+  register: pkidirExists
+
+- name: Generate CA
+  shell: docker run
+      
+- name: debug
+  debug: msg={{configExists.stat.exists}} 

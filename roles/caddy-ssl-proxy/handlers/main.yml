@@ -1,0 +1,10 @@
+# handlers file for caddy-ansible
+- name: Restart Caddy
+  service: name=caddy state=restarted
+  become: true
+
+- name: Reload systemd service file
+  command: systemctl daemon-reload
+  notify: Restart Caddy
+  become: true
+  ignore_errors: yes
