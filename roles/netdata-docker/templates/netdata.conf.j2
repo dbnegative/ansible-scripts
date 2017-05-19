@@ -1,0 +1,10 @@
+[backend]
+    enabled = yes
+    type = opentsdb
+    destination = tcp:influxdb:4242
+    data source = average
+    prefix = onlinebastard
+    hostname = onlinebastard
+    update every = 10
+    buffers on failures = 10
+    timeout ms = 20000

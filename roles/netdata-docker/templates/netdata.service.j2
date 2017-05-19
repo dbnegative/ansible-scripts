@@ -1,0 +1,15 @@
+[Unit]
+Description=netdata Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=5min
+ExecStart=/usr/bin/docker run --memory=2g --name=netdata --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /var/run/docker.sock:/var/run/docker.sock -v /sys:/host/sys:ro -v {{netdata_config_dir}}/netdata.conf:/etc/netdata/netdata.conf:ro --link influxdb --name=netdata -p 19999:19999 titpetric/netdata
+ExecStop=/usr/bin/docker stop -t 2 netdata
+ExecStopPost=/usr/bin/docker rm -f netdata
+
+[Install]
+WantedBy=default.target

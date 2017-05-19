@@ -1,0 +1,8 @@
+ - name: netdata systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart netdata
+
+ - name: Restart netdata
+   service: name=netdata state=restarted
+   become: true

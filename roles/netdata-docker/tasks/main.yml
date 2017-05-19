@@ -1,0 +1,17 @@
+ - name: Create directories
+   file: path={{netdata_config_dir}} state=directory mode=0775
+   become: true
+    
+ - name: Copy over base config
+   template: src=netdata.conf.j2 dest={{netdata_config_dir}}/netdata.conf mode=0755
+   become: true   
+ 
+ - name: Install netdata Docker Container Svc
+   template: src=netdata.service.j2 dest=/etc/systemd/system/netdata.service
+   become: true
+   notify: netdata systemd daemon_reload
+
+ - name: Start netdata
+   become: true
+   service: name=netdata state=running enabled=true
+           
