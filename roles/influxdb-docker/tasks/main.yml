@@ -1,0 +1,20 @@
+ - name: Create directories
+   file: path={{ item }} state=directory mode=0775
+   become: true
+   with_items:
+    - "{{influxdb_config_dir}}"
+    - "{{influxdb_data_dir}}"
+
+ - name: Copy over base config
+   template: src=influxdb.conf.j2 dest={{influxdb_config_dir}}/influxdb.conf mode=0755
+   become: true
+ 
+ - name: Install influxdb Docker Container Svc
+   template: src=influxdb.service.j2 dest=/etc/systemd/system/influxdb.service
+   become: true
+   notify: influxdb systemd daemon_reload
+
+ - name: Start influxdb
+   become: true
+   service: name=influxdb state=running enabled=true
+           

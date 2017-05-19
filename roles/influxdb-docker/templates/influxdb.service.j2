@@ -1,0 +1,15 @@
+[Unit]
+Description=Influxdb Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=5min
+ExecStart=/usr/bin/docker run --memory=4g  --name=influxdb -p 8086:8086 -p 8083:8083 -p 4242:4242 -v {{influxdb_data_dir}}:/var/lib/influxdb  -v {{influxdb_config_dir}}/influxdb.conf:/etc/influxdb/influxdb.conf:ro -e INFLUXDB_ADMIN_ENABLED=true influxdb:alpine -config /etc/influxdb/influxdb.conf
+ExecStop=/usr/bin/docker stop -t 2 influxdb
+ExecStopPost=/usr/bin/docker rm -f influxdb
+
+[Install]
+WantedBy=default.target

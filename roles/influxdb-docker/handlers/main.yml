@@ -1,0 +1,8 @@
+ - name: influxdb systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart influxdb
+
+ - name: Restart influxdb
+   service: name=influxdb state=restarted
+   become: true
