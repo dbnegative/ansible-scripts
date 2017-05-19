@@ -1,0 +1,2 @@
+grafana_data_dir: "/data/volumes/grafana"
+grafana_config_dir: "/data/configs/grafana"

@@ -1,0 +1,20 @@
+ - name: Create directories
+   file: path={{ item }} state=directory mode=0775
+   become: true
+   with_items:
+    - "{{grafana_config_dir}}"
+    - "{{grafana_data_dir}}"
+
+ - name: Copy over base config
+   template: src=grafana.ini.j2 dest={{grafana_config_dir}}/grafana.ini mode=0777
+   become: true
+ 
+ - name: Install grafana Docker Container Svc
+   template: src=grafana.service.j2 dest=/etc/systemd/system/grafana.service
+   become: true
+   notify: grafana systemd daemon_reload
+
+ - name: Start grafana
+   become: true
+   service: name=grafana state=running enabled=true
+           

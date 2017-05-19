@@ -1,0 +1,14 @@
+[Unit]
+Description=grafana Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+RestartSec=10
+TimeoutStartSec=5min
+ExecStart=/usr/bin/docker run --memory=2g  --name=grafana -p 3000:3000 -v /data/volumes/grafana:/var/lib/grafana -v /data/configs/grafana/grafana.ini:/etc/grafana/grafana.ini --link influxdb:influxdb --name grafana grafana/grafana
+ExecStopPost=/usr/bin/docker rm -f grafana
+
+[Install]
+WantedBy=default.target

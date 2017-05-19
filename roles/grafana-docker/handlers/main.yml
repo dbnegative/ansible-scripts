@@ -1,0 +1,8 @@
+ - name: grafana systemd daemon_reload
+   command: /bin/systemctl daemon-reload
+   become: true
+   notify: Restart grafana
+
+ - name: Restart grafana
+   service: name=grafana state=restarted
+   become: true
