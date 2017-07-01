@@ -1,0 +1,10 @@
+  - include: dnsmasq.yml
+    when: ansible_distribution == 'CentOS' and ansible_distribution_version  >= 7
+  - include: nginx.yml
+    when: ansible_distribution == 'CentOS' and ansible_distribution_version >= 7
+  - include: selinux.yml
+    when: ansible_distribution == 'CentOS' and ansible_distribution_version >= 7
+  - include: tftp.yml
+    when: ansible_distribution == 'CentOS' and ansible_distribution_version >= 7
+  - include: coreos.yml
+    when: ansible_distribution == 'CentOS' and ansible_distribution_version >= 7

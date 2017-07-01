@@ -1,0 +1,18 @@
+- name: install dnsmasq
+  yum: pkg={{ item }} state=present
+  with_items:
+    - dnsmasq
+
+- name: install custom dnsmasq config
+  template: src=dnsmasq.conf.j2 dest=/etc/dnsmasq.conf 
+  become: true
+ 
+- name: allow dhcp in firewall  
+  firewalld: port=67/udp permanent=true state=enabled immediate=yes
+
+- name: restart dnsmasq
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: dnsmasq
+    enabled: true

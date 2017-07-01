@@ -1,0 +1,20 @@
+- name: install packages required for PXE server
+  yum: pkg={{ item }} state=present
+  with_items:
+    - tftp-server
+    - syslinux
+  become: true
+
+- name: copy syslinux files to tftp boot dir
+  shell: cp -r /usr/share/syslinux/* /var/lib/tftpboot
+  become: true
+
+- name: create pxelinux.cfg folder 
+  file: path=/var/lib/tftpboot/pxelinux.cfg state=directory
+  become: true 
+
+- name: open TFTP Port  
+  firewalld: port=69/udp permanent=true state=enabled immediate=yes
+  
+- name: open ProxyDHCP Port  
+  firewalld: port=4011/udp permanent=true immediate=yes state=enabled

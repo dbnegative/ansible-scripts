@@ -1,0 +1,17 @@
+- name: get coreos pxe kernel boot file
+  get_url:
+    url: https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz
+    dest: /var/lib/tftpboot/coreos_production_pxe.vmlinuz
+
+- name: get coreos pxe boot image file
+  get_url:
+    url: https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz
+    dest: /var/lib/tftpboot/coreos_production_pxe_image.cpio.gz
+
+- name: place pxe default menu file
+  template: src=default.pxe.j2 dest=/var/lib/tftpboot/pxelinux.cfg/default 
+  become: true
+
+- name: place default ignition file
+  template: src=coreos.ign.j2 dest=/var/www/coreos.ign 
+  become: true

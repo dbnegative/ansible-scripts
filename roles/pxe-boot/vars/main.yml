@@ -1,0 +1,4 @@
+ip_range: 172.16.50.15
+subnetmask: 255.255.255.0
+adapter_id: ens33
+ip: hostvars[inventory_hostname]['ansible_default_ipv4']['address']
