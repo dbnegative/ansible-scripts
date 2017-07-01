@@ -20,6 +20,7 @@ Contains the following roles:
 * ohmyzsh - Installs Oh-My-ZSH (Ubuntu & OSX)
 * powerline_fonts - Fonts for Oh-My-Zsh agnoster theme (Ubuntu & OSX)
 * terminator - Installs Term GUI (Ubuntu)
+* pxe-boot - (Centos 7 only) PXE server with DHCP Proxy, tftp, http file server to boot Coreos. Used with Vmware Fusion
 
 
 Please edit the laptop.yml or mac.yml to change user and user group variables. 
